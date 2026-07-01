@@ -1,0 +1,399 @@
+<!DOCTYPE html><html class="dark" lang="pt-br"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Coletty Admin - Painel de Controle</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Sora:wght@600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#00e676",
+                        "inverse-surface": "#dbe5d9",
+                        "on-surface": "#dbe5d9",
+                        "on-primary-container": "#00612e",
+                        "surface-glass": "rgba(255, 255, 255, 0.05)",
+                        "surface-container-lowest": "#081009",
+                        "status-enroute": "#00B0FF",
+                        "outline-variant": "#3b4a3d",
+                        "primary-fixed-dim": "#00e475",
+                        "tertiary-container": "#ffba79",
+                        "surface-variant": "#2e372e",
+                        "on-tertiary-fixed-variant": "#6a3c03",
+                        "on-primary-fixed": "#00210b",
+                        "error-container": "#93000a",
+                        "on-secondary-container": "#aeb5c6",
+                        "secondary-container": "#3f4755",
+                        "primary": "#75ff9e",
+                        "on-error": "#690005",
+                        "surface-tint": "#00e475",
+                        "on-tertiary-fixed": "#2d1600",
+                        "tertiary-fixed": "#ffdcbf",
+                        "surface-container-high": "#232c24",
+                        "error": "#ffb4ab",
+                        "secondary-fixed-dim": "#bfc7d8",
+                        "outline": "#859585",
+                        "text-primary": "#FFFFFF",
+                        "inverse-on-surface": "#29332a",
+                        "surface-dim": "#0d150e",
+                        "secondary-fixed": "#dbe3f4",
+                        "secondary": "#bfc7d8",
+                        "background": "#0b131f",
+                        "status-completed": "#00E676",
+                        "surface-bright": "#323c33",
+                        "surface-container": "#19221a",
+                        "inverse-primary": "#006d35",
+                        "on-secondary-fixed": "#141c28",
+                        "tertiary": "#ffdec4",
+                        "surface-border": "rgba(255, 255, 255, 0.1)",
+                        "primary-fixed": "#62ff96",
+                        "on-tertiary-container": "#794810",
+                        "on-tertiary": "#4b2800",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary": "#29313e",
+                        "on-primary": "#003918",
+                        "on-surface-variant": "#bacbb9",
+                        "text-secondary": "#94A3B8",
+                        "on-secondary-fixed-variant": "#3f4755",
+                        "surface": "#0d150e",
+                        "status-scheduled": "#FFD600",
+                        "surface-container-low": "#151e16",
+                        "surface-container-highest": "#2e372e",
+                        "on-background": "#dbe5d9",
+                        "on-primary-fixed-variant": "#005226",
+                        "tertiary-fixed-dim": "#fdb878"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "3rem",
+                        "gutter-md": "1.5rem",
+                        "container-padding": "2rem",
+                        "stack-gap": "1rem",
+                        "sidebar-width": "280px"
+                    },
+                    "fontFamily": {
+                        "button-text": ["Sora"],
+                        "body-md": ["Inter"],
+                        "label-mono": ["JetBrains Mono"],
+                        "headline-lg": ["Sora"],
+                        "display-lg": ["Sora"]
+                    },
+                    "fontSize": {
+                        "button-text": ["14px", {"lineHeight": "1.0", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-mono": ["13px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0b131f;
+            color: #dbe5d9;
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-header {
+            background: rgba(11, 19, 31, 0.8);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .neon-glow {
+            box-shadow: 0 0 15px rgba(0, 230, 118, 0.3);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="min-h-screen overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="glass-header sticky top-0 z-50 w-full px-container-padding h-20 flex items-center justify-between">
+<div class="flex items-center gap-6">
+<img alt="Coletty Logo" class="h-10 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCr1zLqt4VLLPCw8ka8jXdZ_-Pk470pCVNf4wbzjvDvPFJLri1-a8OrGkw0mQoBWqd0H_-CTA5Waq9OQe41oODVVKYQweVhSYsTltYrruquOeRF4MWG7fvqTlRibo6BCZAxo3A1IqSo6Cvs1EvwLaeLtSpkRKdJXgruH3wJzPhgMUAFDcKjeqY5-STtS18tr6EGUVPSaxyyE657ORbFouelRqGnRz-3gkGYZH8OFdRZ7XiYfd8Ta_m0n2tvEVftHPsc0XnHWRmZggi">
+<div class="h-8 w-px bg-surface-border"></div>
+<h1 class="font-headline-lg text-[24px] text-text-primary tracking-tight">Painel de Controle</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center gap-2 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors mr-4">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="bg-[#00E676] hover:bg-[#00c864] text-on-primary-container font-button-text text-button-text px-6 py-3 rounded-lg neon-glow transition-all active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                + Cadastrar Rota
+            </button>
+</div>
+</header>
+<!-- Sub-Navigation Tabs -->
+<nav class="w-full border-b border-surface-border px-container-padding bg-background/50 backdrop-blur-md">
+<div class="flex gap-10">
+<a class="py-4 font-button-text text-button-text text-[#00E676] border-b-2 border-[#00E676] flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]">analytics</span>
+                Acompanhar Rotas
+            </a>
+<a class="py-4 font-button-text text-button-text text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]">list_alt</span>
+                Listagem de Rotas
+            </a>
+
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="p-container-padding max-w-[1600px] mx-auto">
+<!-- Dashboard Header Stats -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="glass-card p-6 rounded-xl flex items-center justify-between">
+<div>
+<p class="text-on-surface-variant font-label-mono text-label-mono uppercase mb-1">Total Ativas</p>
+<p class="text-text-primary font-headline-lg text-[28px]">07</p>
+</div>
+<div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">route</span>
+</div>
+</div>
+<div class="glass-card p-6 rounded-xl flex items-center justify-between" style="transform: translateY(0px);">
+<div>
+<p class="text-on-surface-variant font-label-mono text-label-mono uppercase mb-1">Ocorrências</p>
+<p class="text-error font-headline-lg text-[28px]">01</p>
+</div>
+<div class="h-12 w-12 rounded-lg bg-error/10 flex items-center justify-center text-error">
+<span class="material-symbols-outlined">warning</span>
+</div>
+</div>
+<div class="glass-card p-6 rounded-xl flex items-center justify-between">
+<div>
+<p class="text-on-surface-variant font-label-mono text-label-mono uppercase mb-1">Previsão Conclusão</p>
+<p class="text-status-enroute font-headline-lg text-[28px]">17:45</p>
+</div>
+<div class="h-12 w-12 rounded-lg bg-status-enroute/10 flex items-center justify-center text-status-enroute">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+</div>
+</div>
+<!-- Kan-Ban Style Tracking Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+<!-- Column 1: Aguardando Início -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between mb-2">
+<h2 class="font-headline-lg text-[18px] text-text-primary flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-on-surface-variant"></span>
+                        Aguardando Início (3)
+                    </h2>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Card 1 -->
+<div class="glass-card p-5 rounded-xl hover:bg-white/[0.08] transition-all cursor-pointer group">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-mono text-label-mono text-primary bg-primary/10 px-2 py-1 rounded">#RT-8821</span>
+<span class="text-on-surface-variant text-[12px]">08:15 AM</span>
+</div>
+<h3 class="text-text-primary font-semibold mb-1">Logística Norte PJ</h3>
+<p class="text-on-surface-variant text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                            Bairro: Industrial Park
+                        </p>
+<div class="mt-4 pt-4 border-t border-surface-border flex justify-between items-center">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full bg-surface-variant border-2 border-background flex items-center justify-center text-[10px]">JD</div>
+</div>
+<span class="text-on-surface-variant text-[12px] group-hover:text-primary transition-colors">Detalhes →</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="glass-card p-5 rounded-xl hover:bg-white/[0.08] transition-all cursor-pointer group">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-mono text-label-mono text-primary bg-primary/10 px-2 py-1 rounded">#RT-8825</span>
+<span class="text-on-surface-variant text-[12px]">09:30 AM</span>
+</div>
+<h3 class="text-text-primary font-semibold mb-1">Supermercado Silva PJ</h3>
+<p class="text-on-surface-variant text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                            Bairro: Vila Nova
+                        </p>
+<div class="mt-4 pt-4 border-t border-surface-border flex justify-between items-center">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full bg-surface-variant border-2 border-background flex items-center justify-center text-[10px]">ML</div>
+</div>
+<span class="text-on-surface-variant text-[12px] group-hover:text-primary transition-colors">Detalhes →</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="glass-card p-5 rounded-xl hover:bg-white/[0.08] transition-all cursor-pointer group">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-mono text-label-mono text-primary bg-primary/10 px-2 py-1 rounded">#RT-8830</span>
+<span class="text-on-surface-variant text-[12px]">10:45 AM</span>
+</div>
+<h3 class="text-text-primary font-semibold mb-1">Indústria Têxtil PJ</h3>
+<p class="text-on-surface-variant text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                            Bairro: Centro Oeste
+                        </p>
+<div class="mt-4 pt-4 border-t border-surface-border flex justify-between items-center">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full bg-surface-variant border-2 border-background flex items-center justify-center text-[10px]">RS</div>
+</div>
+<span class="text-on-surface-variant text-[12px] group-hover:text-primary transition-colors">Detalhes →</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Column 2: Em Rota / Na Rua -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between mb-2">
+<h2 class="font-headline-lg text-[18px] text-text-primary flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+                        Em Rota / Na Rua (2)
+                    </h2>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Card Alert Active -->
+<div class="glass-card p-5 rounded-xl border-error/30 ring-1 ring-error/20 relative overflow-hidden" style="transform: translateY(0px);">
+<div class="absolute top-0 right-0">
+<div class="bg-error text-on-error font-label-mono text-[10px] px-3 py-1 flex items-center gap-1 rounded-bl-lg">
+<span class="material-symbols-outlined text-[12px]">report</span>
+                                ⚠️ Desvio Detectado
+                             </div>
+</div>
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-mono text-label-mono text-primary bg-primary/10 px-2 py-1 rounded">#RT-8810</span>
+</div>
+<h3 class="text-text-primary font-semibold mb-1">Motorista: Carlos Andrade</h3>
+<p class="text-on-surface-variant text-sm mb-4">Rota: Central-Sul / 5 paradas restantes</p>
+<div class="space-y-2">
+<div class="flex justify-between items-end text-[11px] font-label-mono text-on-surface-variant uppercase">
+<span class="">Progresso</span>
+<span class="">65%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary shadow-[0_0_8px_#00E676]" style="width: 65%"></div>
+</div>
+</div>
+<div class="mt-4 flex gap-2">
+<button class="flex-1 py-2 rounded bg-error/20 text-error text-[12px] font-semibold border border-error/30 hover:bg-error/30 transition-colors">Ver Mapa</button>
+<button class="flex-1 py-2 rounded bg-surface-variant text-on-surface text-[12px] font-semibold border border-surface-border hover:bg-surface-container-highest transition-colors">Contatar</button>
+</div>
+</div>
+<!-- Card Regular Active -->
+<div class="glass-card p-5 rounded-xl" style="transform: translateY(0px);">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-mono text-label-mono text-primary bg-primary/10 px-2 py-1 rounded">#RT-8812</span>
+<div class="flex items-center gap-1 text-primary text-[11px] font-label-mono uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                                Live
+                            </div>
+</div>
+<h3 class="text-text-primary font-semibold mb-1">Motorista: Ricardo Souza</h3>
+<p class="text-on-surface-variant text-sm mb-4">Rota: Zona Portuária / 2 paradas restantes</p>
+<div class="space-y-2">
+<div class="flex justify-between items-end text-[11px] font-label-mono text-on-surface-variant uppercase">
+<span class="">Progresso</span>
+<span class="">88%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary shadow-[0_0_8px_#00E676]" style="width: 88%"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Column 3: Pendente Pesagem -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between mb-2">
+<h2 class="font-headline-lg text-[18px] text-text-primary flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-status-scheduled"></span>
+                        Pendente Pesagem (2)
+                    </h2>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Card Pending Weighing 1 -->
+<div class="glass-card p-5 rounded-xl border-dashed border-primary/20">
+<div class="flex justify-between items-start mb-3">
+<span class="font-label-mono text-label-mono text-on-surface-variant bg-surface-variant px-2 py-1 rounded">#RT-8790</span>
+<span class="bg-status-scheduled/10 text-status-scheduled text-[10px] px-2 py-1 rounded font-bold uppercase">Finalizada</span>
+</div>
+<h3 class="text-text-primary font-semibold mb-1">Coleta: Metalúrgica Gerdau</h3>
+<p class="text-on-surface-variant text-sm mb-4">Aguardando registro no Galpão A</p>
+<div class="bg-surface-container-low/50 p-3 rounded-lg border border-surface-border">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[12px] text-on-surface-variant">Volume Estimado</span>
+<span class="text-[14px] text-text-primary font-medium">1,200kg</span>
+</div>
+<button class="w-full py-2 bg-primary-container text-on-primary-container text-[12px] font-bold rounded hover:opacity-90 transition-opacity">Registrar Peso Real</button>
+</div>
+</div>
+<!-- Card Pending Weighing 2 -->
+<div class="glass-card p-5 rounded-xl border-dashed border-primary/20">
+<div class="flex justify-between items-start mb-3">
+<span class="font-label-mono text-label-mono text-on-surface-variant bg-surface-variant px-2 py-1 rounded">#RT-8795</span>
+<span class="bg-status-scheduled/10 text-status-scheduled text-[10px] px-2 py-1 rounded font-bold uppercase">Finalizada</span>
+</div>
+<h3 class="text-text-primary font-semibold mb-1">Coleta: Hospital Santa Clara</h3>
+<p class="text-on-surface-variant text-sm mb-4">Aguardando registro no Galpão B</p>
+<div class="bg-surface-container-low/50 p-3 rounded-lg border border-surface-border">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[12px] text-on-surface-variant">Volume Estimado</span>
+<span class="text-[14px] text-text-primary font-medium">450kg</span>
+</div>
+<button class="w-full py-2 bg-primary-container text-on-primary-container text-[12px] font-bold rounded hover:opacity-90 transition-opacity">Registrar Peso Real</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Floating Atmosphere Micro-Interactions -->
+<div class="fixed inset-0 pointer-events-none z-[-1] overflow-hidden">
+<div class="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] bg-primary/5 blur-[120px] rounded-full"></div>
+<div class="absolute bottom-[-5%] left-[-5%] w-[500px] h-[500px] bg-status-enroute/5 blur-[150px] rounded-full"></div>
+</div>
+<script>
+        // Simple micro-interactions for a more "active" feel
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-2px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Current time simulation
+        function updateClock() {
+            // Logic for real-time dashboard updates would go here
+            console.log('Syncing live data...');
+        }
+        setInterval(updateClock, 30000);
+    </script>
+
+
+</body></html>

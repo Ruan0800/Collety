@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Coletty Driver - Rota</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #0b131f;
+            color: #dbe5d9;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(0, 230, 118, 0.4);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* Map Pulse Effect */
+        @keyframes map-pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+        .waypoint-pulse {
+            animation: map-pulse 2s infinite ease-in-out;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#62ff96",
+                        "surface-dim": "#0d150e",
+                        "on-surface-variant": "#bacbb9",
+                        "status-completed": "#00E676",
+                        "outline-variant": "#3b4a3d",
+                        "surface-container-highest": "#2e372e",
+                        "outline": "#859585",
+                        "background": "#0d150e",
+                        "on-secondary-fixed": "#141c28",
+                        "on-tertiary-fixed": "#2d1600",
+                        "on-primary-fixed": "#00210b",
+                        "secondary-container": "#3f4755",
+                        "on-tertiary-container": "#794810",
+                        "on-primary-fixed-variant": "#005226",
+                        "on-primary": "#003918",
+                        "surface-glass": "rgba(255, 255, 255, 0.05)",
+                        "surface-container-high": "#232c24",
+                        "secondary-fixed": "#dbe3f4",
+                        "on-secondary": "#29313e",
+                        "inverse-on-surface": "#29332a",
+                        "secondary": "#bfc7d8",
+                        "secondary-fixed-dim": "#bfc7d8",
+                        "inverse-primary": "#006d35",
+                        "on-secondary-fixed-variant": "#3f4755",
+                        "text-secondary": "#94A3B8",
+                        "surface-variant": "#2e372e",
+                        "on-surface": "#dbe5d9",
+                        "tertiary": "#ffdec4",
+                        "on-error": "#690005",
+                        "tertiary-container": "#ffba79",
+                        "surface-container-lowest": "#081009",
+                        "tertiary-fixed-dim": "#fdb878",
+                        "text-primary": "#FFFFFF",
+                        "surface-container-low": "#151e16",
+                        "primary": "#75ff9e",
+                        "status-scheduled": "#FFD600",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-container": "#aeb5c6",
+                        "surface-bright": "#323c33",
+                        "on-tertiary-fixed-variant": "#6a3c03",
+                        "surface-container": "#19221a",
+                        "primary-fixed-dim": "#00e475",
+                        "on-tertiary": "#4b2800",
+                        "status-enroute": "#00B0FF",
+                        "primary-container": "#00e676",
+                        "inverse-surface": "#dbe5d9",
+                        "error": "#ffb4ab",
+                        "surface-border": "rgba(255, 255, 255, 0.1)",
+                        "on-primary-container": "#00612e",
+                        "tertiary-fixed": "#ffdcbf",
+                        "surface": "#0d150e",
+                        "surface-tint": "#00e475",
+                        "error-container": "#93000a",
+                        "on-background": "#dbe5d9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-gap": "1rem",
+                        "section-gap": "3rem",
+                        "sidebar-width": "280px",
+                        "gutter-md": "1.5rem",
+                        "container-padding": "2rem"
+                    },
+                    "fontFamily": {
+                        "label-mono": ["JetBrains Mono"],
+                        "headline-lg": ["Sora"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Sora"],
+                        "display-lg": ["Sora"],
+                        "button-text": ["Sora"]
+                    },
+                    "fontSize": {
+                        "label-mono": ["13px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "button-text": ["14px", {"lineHeight": "1.0", "letterSpacing": "0.02em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[#0b131f] min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-gutter-md h-16 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-surface-border">
+<div class="flex items-center gap-4">
+<button class="transition-all active:scale-95 text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-tight">Coletty Driver</h1>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="A professional close-up portrait of a logistics driver with a confident expression, wearing a high-tech dark uniform with neon green accents. The lighting is moody and cinematic with green rim light, emphasizing a futuristic, high-efficiency mission control aesthetic consistent with a dark mode software suite." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMAwohiMwYfnEj77YpjMgOYXmuPCcHPkJ28JToZaNUfe8pIFsHv1nuXg4E3EutWAtMMBXY6E5TGToMfm_wlS2fHm7SInoA_yO3ejlqztFsQum6obdEAnBeLv55jzLrZUdSFLQ49jIUR1uALOFtJqptKEnuUQMCPXA-xb9kOgrRITI6mW6BO1ZwBK4zIDGfPvRT5651rSpPHr5jkXe1KshSbqnS5nwfZLYRVdn8COsIr6RvjolL59WK4hrMyzs_L9SOdglqykhrNCx1"/>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 pt-20 pb-8 px-4 flex flex-col gap-6">
+<!-- Map Container -->
+<div class="flex-1 relative glass-card rounded-xl overflow-hidden min-h-[400px]">
+<!-- Map Background Placeholder -->
+<div class="absolute inset-0 bg-cover bg-center opacity-60" data-alt="A high-contrast dark mode satellite map of a metropolitan city area at night. The streets are outlined in subtle charcoal grays, while a glowing, vibrant neon green route line winds through the grid, connecting several highlighted collection points marked by pulsing green circles. The style is technical and futuristic, like a high-end GPS dashboard for industrial logistics." data-location="São Paulo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCm_YqyffFfRF4rerF4IeON4bGhi-R7mq6pT71OzwvSPsiW2gNkikakWe9X1wrHnRxoDtbUuIBWt8ZVyftyviUFxydVQb7CFUbFIQm6eCrl_aNTfsYR927w_mcB8HJcdVIXpFwlU6V7m7gUGVmDMb6HwiOu82UPiPmaD4Y29M0KP3sb06GwB0RS5K-0tYAwtt2a3EEDZrYM28iD4RJgiVDpTFkUzX7IUFSqfphyGTJJXBgjmeCFTKV1yYYJGmCdGFcaHRT2ASxq5njn')"></div>
+<!-- Map Overlays (Simulated UI) -->
+<div class="absolute top-4 left-4 flex flex-col gap-2">
+<div class="bg-surface-container-high/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-surface-border flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">near_me</span>
+<span class="font-label-mono text-label-mono text-on-surface">ROTA: #4429</span>
+</div>
+</div>
+<div class="absolute bottom-4 right-4 flex flex-col gap-2">
+<button class="w-12 h-12 glass-card rounded-full flex items-center justify-center text-primary transition-all active:scale-90">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+<button class="w-12 h-12 glass-card rounded-full flex items-center justify-center text-primary transition-all active:scale-90">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="w-12 h-12 glass-card rounded-full flex items-center justify-center text-primary transition-all active:scale-90">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+<!-- Route Details Overlay (Floating) -->
+<div class="absolute bottom-4 left-4 right-16">
+<div class="glass-card rounded-xl p-4 flex flex-col gap-1 border-l-4 border-l-primary">
+<div class="flex justify-between items-center">
+<span class="font-label-mono text-label-mono text-primary uppercase">Próxima Coleta</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">4.2 km</span>
+</div>
+<div class="font-headline-lg-mobile text-[18px] text-on-surface leading-tight">Condomínio Solar das Oliveiras</div>
+<div class="font-body-md text-sm text-on-surface-variant">Rua das Azaleias, 1204 - Setor Oeste</div>
+</div>
+</div>
+</div>
+<!-- Route Summary Cards -->
+<div class="grid grid-cols-2 gap-4">
+<div class="glass-card p-4 rounded-xl flex flex-col gap-1">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+<span class="font-label-mono text-[11px] uppercase tracking-wider">Pontos</span>
+</div>
+<div class="font-headline-lg-mobile text-primary text-[24px]">08/12</div>
+</div>
+<div class="glass-card p-4 rounded-xl flex flex-col gap-1">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">timer</span>
+<span class="font-label-mono text-[11px] uppercase tracking-wider">Tempo Est.</span>
+</div>
+<div class="font-headline-lg-mobile text-primary text-[24px]">1h 45m</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col gap-4 mt-auto">
+<button class="w-full py-4 bg-primary-container text-on-primary-container font-button-text text-button-text rounded-xl neon-glow transition-all active:scale-[0.98] flex items-center justify-center gap-3">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                Iniciar Rota
+            </button>
+<button class="w-full py-4 border border-outline text-on-surface font-button-text text-button-text rounded-xl bg-transparent transition-all active:scale-[0.98] flex items-center justify-center gap-3">
+<span class="material-symbols-outlined">arrow_back</span>
+                Voltar
+            </button>
+</div>
+</main>
+<!-- Subtle Decorative Background Glow -->
+<div class="fixed top-1/4 -left-20 w-64 h-64 bg-primary/5 blur-[100px] pointer-events-none rounded-full"></div>
+<div class="fixed bottom-1/4 -right-20 w-80 h-80 bg-primary/10 blur-[120px] pointer-events-none rounded-full"></div>
+<script>
+        // Micro-interaction for the primary button
+        const startBtn = document.querySelector('.neon-glow');
+        if (startBtn) {
+            startBtn.addEventListener('touchstart', () => {
+                startBtn.style.transform = 'scale(0.96)';
+            });
+            startBtn.addEventListener('touchend', () => {
+                startBtn.style.transform = 'scale(1)';
+            });
+        }
+
+        // Simulate some data loading/entrance animation
+        window.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.5s ease-out';
+                card.style.transitionDelay = `${index * 100}ms`;
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100);
+            });
+        });
+    </script>
+</body></html>

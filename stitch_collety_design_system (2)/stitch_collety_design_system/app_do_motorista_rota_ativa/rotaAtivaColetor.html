@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Coletty Driver - Rota Ativa</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Sora:wght@600;700;800&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#ffdec4",
+                    "surface-border": "rgba(255, 255, 255, 0.1)",
+                    "primary-fixed": "#62ff96",
+                    "on-tertiary-container": "#794810",
+                    "on-tertiary": "#4b2800",
+                    "surface-bright": "#323c33",
+                    "surface-container": "#19221a",
+                    "inverse-primary": "#006d35",
+                    "on-secondary-fixed": "#141c28",
+                    "background": "#0d150e",
+                    "status-completed": "#00E676",
+                    "secondary-fixed": "#dbe3f4",
+                    "secondary": "#bfc7d8",
+                    "tertiary-fixed-dim": "#fdb878",
+                    "on-background": "#dbe5d9",
+                    "surface-container-low": "#151e16",
+                    "surface-container-highest": "#2e372e",
+                    "on-primary-fixed-variant": "#005226",
+                    "on-surface-variant": "#bacbb9",
+                    "text-secondary": "#94A3B8",
+                    "on-secondary-fixed-variant": "#3f4755",
+                    "status-scheduled": "#FFD600",
+                    "surface": "#0d150e",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary": "#29313e",
+                    "on-primary": "#003918",
+                    "error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#6a3c03",
+                    "on-primary-fixed": "#00210b",
+                    "tertiary-container": "#ffba79",
+                    "surface-variant": "#2e372e",
+                    "surface-container-lowest": "#081009",
+                    "status-enroute": "#00B0FF",
+                    "outline-variant": "#3b4a3d",
+                    "primary-fixed-dim": "#00e475",
+                    "primary-container": "#00e676",
+                    "inverse-surface": "#dbe5d9",
+                    "on-surface": "#dbe5d9",
+                    "on-primary-container": "#00612e",
+                    "surface-glass": "rgba(255, 255, 255, 0.05)",
+                    "outline": "#859585",
+                    "text-primary": "#FFFFFF",
+                    "inverse-on-surface": "#29332a",
+                    "surface-dim": "#0d150e",
+                    "surface-container-high": "#232c24",
+                    "error": "#ffb4ab",
+                    "secondary-fixed-dim": "#bfc7d8",
+                    "on-error": "#690005",
+                    "primary": "#75ff9e",
+                    "surface-tint": "#00e475",
+                    "on-tertiary-fixed": "#2d1600",
+                    "tertiary-fixed": "#ffdcbf",
+                    "on-secondary-container": "#aeb5c6",
+                    "secondary-container": "#3f4755"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter-md": "1.5rem",
+                    "container-padding": "2rem",
+                    "stack-gap": "1rem",
+                    "sidebar-width": "280px",
+                    "section-gap": "3rem"
+            },
+            "fontFamily": {
+                    "button-text": ["Sora"],
+                    "body-md": ["Inter"],
+                    "label-mono": ["JetBrains Mono"],
+                    "headline-lg": ["Sora"],
+                    "headline-lg-mobile": ["Sora"],
+                    "display-lg": ["Sora"]
+            },
+            "fontSize": {
+                    "button-text": ["14px", {"lineHeight": "1.0", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-mono": ["13px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0b131f; /* Force the deep navy requested */
+            color: #dbe5d9;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .neo-shadow {
+            box-shadow: 0 0 20px rgba(0, 230, 118, 0.2);
+        }
+
+        .active-glow {
+            box-shadow: inset 0 0 10px rgba(117, 255, 158, 0.1);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-body-md min-h-screen flex flex-col">
+<!-- Top App Bar -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-gutter-md h-16 bg-surface/80 backdrop-blur-xl border-b border-surface-border">
+<div class="flex items-center gap-3">
+<button class="transition-all active:scale-95 text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-tight">Coletty Driver</h1>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-primary overflow-hidden transition-all active:scale-95">
+<img class="w-full h-full object-cover" data-alt="A professional close-up portrait of a male logistics driver wearing a clean, modern green and black uniform. He is smiling warmly in a well-lit, high-tech industrial environment. The lighting is crisp with cool blue tones and vibrant neon green accents, creating a futuristic yet trustworthy atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBN0YRhFWmYR0olGnJAASgyij4sOO0d7ZFz_p8chWNjqWPp8Vs66bZchqCr2iw7LxCxGDqyamB_h6QF1SjWS6I7KQjC4TsqCs999g4m-D258jxh8s8J8L_5tzaQ_es4OYQcMDu6Rtc7qQ_Ua2E9KD8LV5BJRfyciOTnIuadqpQW3EQoDtecVVvyHG0M9cAc0SaU_FnOjGtNZIeahZ2DVx7q8bMgIvp60DRTgwpgKLxmkjKtJpDU2BjG16Hzq4Mt2YyglAc6ohAn_tki"/>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 mt-16 px-gutter-md pt-8 pb-40 overflow-y-auto custom-scrollbar">
+<!-- Page Header Section -->
+<div class="mb-8">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-1">Rota em Andamento</h2>
+<p class="text-on-surface-variant font-body-md opacity-80">Realize as pesagens para finalizar</p>
+</div>
+<!-- Collection List -->
+<div class="space-y-4">
+<!-- Active Collection Card 1 -->
+<div class="glass-card rounded-xl p-5 flex flex-col gap-4 active-glow">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-mono text-label-mono text-primary bg-primary/10 px-2 py-1 rounded">#COL-101</span>
+<h3 class="font-headline-lg-mobile text-lg text-white mt-2">Condomínio Solar das Palmeiras</h3>
+</div>
+<span class="text-status-enroute material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">map</span>
+<span class="font-body-md text-sm">Bairro: Jardim das Flores</span>
+</div>
+<div class="mt-2">
+<label class="block font-label-mono text-xs text-on-surface-variant uppercase mb-2">Peso da Coleta (kg)</label>
+<div class="relative">
+<input class="w-full bg-surface-container-highest border border-surface-border rounded-lg px-4 py-3 text-primary font-label-mono focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="0.00" type="number"/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-label-mono">kg</span>
+</div>
+</div>
+</div>
+<!-- Active Collection Card 2 -->
+<div class="glass-card rounded-xl p-5 flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-mono text-label-mono text-primary bg-primary/10 px-2 py-1 rounded">#COL-102</span>
+<h3 class="font-headline-lg-mobile text-lg text-white mt-2">Restaurante Central Gourmet</h3>
+</div>
+<span class="text-on-surface-variant material-symbols-outlined">location_on</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">map</span>
+<span class="font-body-md text-sm">Bairro: Centro Histórico</span>
+</div>
+<div class="mt-2">
+<label class="block font-label-mono text-xs text-on-surface-variant uppercase mb-2">Peso da Coleta (kg)</label>
+<div class="relative">
+<input class="w-full bg-surface-container-highest border border-surface-border rounded-lg px-4 py-3 text-primary font-label-mono focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="0.00" type="number"/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-label-mono">kg</span>
+</div>
+</div>
+</div>
+<!-- Active Collection Card 3 -->
+<div class="glass-card rounded-xl p-5 flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-mono text-label-mono text-primary bg-primary/10 px-2 py-1 rounded">#COL-105</span>
+<h3 class="font-headline-lg-mobile text-lg text-white mt-2">Supermercado EcoVida</h3>
+</div>
+<span class="text-on-surface-variant material-symbols-outlined">location_on</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">map</span>
+<span class="font-body-md text-sm">Bairro: Vila Nova</span>
+</div>
+<div class="mt-2">
+<label class="block font-label-mono text-xs text-on-surface-variant uppercase mb-2">Peso da Coleta (kg)</label>
+<div class="relative">
+<input class="w-full bg-surface-container-highest border border-surface-border rounded-lg px-4 py-3 text-primary font-label-mono focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="0.00" type="number"/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-label-mono">kg</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Fixed Footer Actions -->
+<section class="fixed bottom-0 left-0 w-full z-50 p-6 space-y-3 bg-gradient-to-t from-[#0b131f] via-[#0b131f]/95 to-transparent">
+<button class="w-full h-14 rounded-xl border border-primary/30 bg-surface-glass text-primary font-button-text text-button-text flex items-center justify-center gap-2 transition-all active:scale-95">
+<span class="material-symbols-outlined text-xl">add</span>
+            + Adicionar Coleta
+        </button>
+<button class="w-full h-14 rounded-xl bg-status-completed text-[#0d150e] font-button-text text-button-text font-bold neo-shadow flex items-center justify-center gap-2 transition-all active:scale-95 active:bg-primary-fixed-dim">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+            Finalizar Rota
+        </button>
+</section>
+<!-- Bottom Nav Bar (Suppressed as per task focusing on specific active route screen, but kept layout safety) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-surface-container-low/90 backdrop-blur-xl border-t border-surface-border hidden">
+<div class="flex flex-col items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined">near_me</span>
+<span class="font-label-mono text-[10px]">Route</span>
+</div>
+</nav>
+<script>
+        // Micro-interaction for input fields
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.closest('.glass-card').classList.add('border-primary/40');
+            });
+            input.addEventListener('blur', () => {
+                input.closest('.glass-card').classList.remove('border-primary/40');
+            });
+        });
+
+        // Simple feedback for complete button
+        const finalizeBtn = document.querySelector('button.bg-status-completed');
+        finalizeBtn.addEventListener('click', () => {
+            const originalText = finalizeBtn.innerHTML;
+            finalizeBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Finalizando...';
+            setTimeout(() => {
+                finalizeBtn.innerHTML = originalText;
+            }, 2000);
+        });
+    </script>
+</body></html>

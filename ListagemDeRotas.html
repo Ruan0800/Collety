@@ -1,0 +1,348 @@
+<!DOCTYPE html><html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Coletty Admin - Listagem de Rotas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-container": "#00612e",
+                      "surface-variant": "#2e372e",
+                      "surface": "#0d150e",
+                      "inverse-primary": "#006d35",
+                      "error": "#ffb4ab",
+                      "surface-container-high": "#232c24",
+                      "surface-border": "rgba(255, 255, 255, 0.1)",
+                      "inverse-surface": "#dbe5d9",
+                      "tertiary-fixed-dim": "#fdb878",
+                      "tertiary-container": "#ffba79",
+                      "on-tertiary-container": "#794810",
+                      "secondary-container": "#3f4755",
+                      "on-tertiary": "#4b2800",
+                      "surface-container": "#19221a",
+                      "on-primary-fixed-variant": "#005226",
+                      "surface-dim": "#0d150e",
+                      "surface-container-low": "#151e16",
+                      "primary-fixed": "#62ff96",
+                      "text-secondary": "#94A3B8",
+                      "primary": "#75ff9e",
+                      "status-enroute": "#00B0FF",
+                      "on-tertiary-fixed": "#2d1600",
+                      "on-primary": "#003918",
+                      "text-primary": "#FFFFFF",
+                      "on-surface-variant": "#bacbb9",
+                      "surface-container-lowest": "#081009",
+                      "outline": "#859585",
+                      "outline-variant": "#3b4a3d",
+                      "status-scheduled": "#FFD600",
+                      "on-secondary-container": "#aeb5c6",
+                      "tertiary": "#ffdec4",
+                      "on-secondary": "#29313e",
+                      "error-container": "#93000a",
+                      "surface-tint": "#00e475",
+                      "surface-bright": "#323c33",
+                      "on-surface": "#dbe5d9",
+                      "surface-glass": "rgba(255, 255, 255, 0.05)",
+                      "on-error": "#690005",
+                      "secondary-fixed": "#dbe3f4",
+                      "primary-fixed-dim": "#00e475",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-highest": "#2e372e",
+                      "status-completed": "#00E676",
+                      "secondary-fixed-dim": "#bfc7d8",
+                      "on-background": "#dbe5d9",
+                      "inverse-on-surface": "#29332a",
+                      "on-secondary-fixed": "#141c28",
+                      "primary-container": "#00e676",
+                      "on-secondary-fixed-variant": "#3f4755",
+                      "on-primary-fixed": "#00210b",
+                      "secondary": "#bfc7d8",
+                      "tertiary-fixed": "#ffdcbf",
+                      "background": "#0b131f",
+                      "on-tertiary-fixed-variant": "#6a3c03"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-gap": "1rem",
+                      "section-gap": "3rem",
+                      "sidebar-width": "280px",
+                      "gutter-md": "1.5rem",
+                      "container-padding": "2rem"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Sora"],
+                      "display-lg": ["Sora"],
+                      "body-md": ["Inter"],
+                      "button-text": ["Sora"],
+                      "label-mono": ["JetBrains Mono"]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0b131f;
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-glow {
+            box-shadow: 0 0 15px rgba(0, 230, 118, 0.3);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+<!-- Top Header Bar -->
+<header class="fixed top-0 left-0 right-0 h-16 glass-card z-50 flex items-center justify-between px-8 border-b border-surface-border" style="transform: translateY(0px); transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 flex items-center justify-center bg-primary-container rounded-lg neon-glow">
+<span class="material-symbols-outlined text-on-primary text-xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary">Coletty Admin</h1>
+<span class="ml-2 px-3 py-0.5 border border-primary/30 rounded-full text-[10px] font-label-mono tracking-widest text-primary uppercase">Painel de Controle</span>
+</div>
+<button class="flex items-center gap-2 bg-primary-container text-on-primary px-6 py-2.5 rounded-lg font-button-text text-button-text hover:brightness-110 transition-all active:scale-95 neon-glow">
+<span class="material-symbols-outlined text-lg">add</span>
+            + Cadastrar Rota
+        </button>
+</header>
+<main class="pt-24 pb-12 px-8 max-w-[1440px] mx-auto">
+<!-- Navigation Tabs -->
+<nav class="flex gap-8 mb-12 border-b border-surface-border relative">
+<a class="pb-4 font-button-text text-button-text text-on-surface-variant hover:text-on-surface transition-colors" href="#">
+                Acompanhar Rotas
+            </a>
+<a class="pb-4 font-button-text text-button-text text-primary relative" href="#">
+                Listagem de Rotas
+                <div class="absolute bottom-[-1px] left-0 w-full h-[2px] bg-primary-container shadow-[0_0_8px_rgba(0,230,118,0.8)]"></div>
+</a>
+
+</nav>
+<!-- Content Area: Listagem de Rotas -->
+<section>
+<!-- Action Bar -->
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-text-primary">Histórico e Controle de Rotas</h2>
+<p class="font-body-md text-body-md text-text-secondary">Gerencie, exporte e audite todas as coletas programadas</p>
+</div>
+<div class="flex gap-4">
+<button class="flex items-center gap-2 px-5 py-2.5 glass-card rounded-lg text-text-primary font-button-text text-button-text hover:bg-white/10 transition-all">
+<span class="material-symbols-outlined text-lg">table_view</span>
+                        Exportar .CSV
+                    </button>
+<button class="flex items-center gap-2 px-5 py-2.5 bg-primary-container text-on-primary rounded-lg font-button-text text-button-text hover:brightness-110 transition-all neon-glow">
+<span class="material-symbols-outlined text-lg">print</span>
+                        Imprimir Listagem
+                    </button>
+</div>
+</div>
+<!-- Route List (Vertical Grid of Cards) -->
+<div class="space-y-4">
+<!-- Card 1: CONCLUÍDA -->
+<div class="glass-card rounded-xl p-6 flex items-center justify-between hover:bg-white/10 transition-all border-l-4 border-l-status-completed" style="transform: translateY(0px); transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+<!-- Block 1 -->
+<div class="w-1/4">
+<span class="font-label-mono text-label-mono text-text-secondary mb-1 block">#COL-4039</span>
+<h3 class="font-headline-lg text-[18px] font-semibold text-text-primary leading-tight">Ceará Tech Solutions</h3>
+<p class="font-label-mono text-[11px] text-text-secondary mb-3">CNPJ: 45.221.908/0001-32</p>
+<span class="px-3 py-1 rounded-full bg-status-completed/10 text-status-completed font-label-mono text-[10px] border border-status-completed/20">
+                            CONCLUÍDA
+                        </span>
+</div>
+<!-- Block 2 -->
+<div class="w-1/4 flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1">location_on</span>
+<div class="text-text-secondary font-body-md text-[14px]">
+<p class="text-text-primary">Rua dos Inconfidentes, 442</p>
+<p class="">Bloco B, Sala 12</p>
+<p class="">Aldeota, Fortaleza - CE</p>
+</div>
+</div>
+<!-- Block 3 -->
+<div class="w-1/4">
+<div class="flex flex-col">
+<span class="text-text-secondary text-[12px] font-label-mono uppercase tracking-wider">Responsável</span>
+<span class="text-text-primary font-semibold">Roberto Mendes</span>
+<div class="mt-2 flex items-center gap-2 text-primary font-label-mono text-[13px]">
+<span class="material-symbols-outlined text-[16px]">scale</span>
+                                Peso Validado: 148 Kg
+                            </div><div class="mt-1 flex items-center gap-2 text-text-secondary font-label-mono text-[13px]"><span class="material-symbols-outlined text-[16px]">inventory_2</span>Volume Total: 450L</div>
+</div>
+</div>
+<!-- Block 4 -->
+<div class="w-1/6 flex justify-end">
+<button class="px-4 py-2 border border-primary/40 text-primary rounded-lg font-button-text text-[12px] hover:bg-primary/10 transition-all">
+                            [📄 Ver Declaração]
+                        </button>
+</div>
+</div>
+<!-- Card 2: EM ROTA -->
+<div class="glass-card rounded-xl p-6 flex items-center justify-between hover:bg-white/10 transition-all border-l-4 border-l-status-scheduled" style="transform: translateY(0px); transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+<!-- Block 1 -->
+<div class="w-1/4">
+<span class="font-label-mono text-label-mono text-text-secondary mb-1 block">#COL-4045</span>
+<h3 class="font-headline-lg text-[18px] font-semibold text-text-primary leading-tight">Indústrias Nordeste S.A.</h3>
+<p class="font-label-mono text-[11px] text-text-secondary mb-3">CNPJ: 12.843.112/0001-90</p>
+<span class="px-3 py-1 rounded-full bg-status-scheduled/10 text-status-scheduled font-label-mono text-[10px] border border-status-scheduled/20">
+                            EM ROTA
+                        </span>
+</div>
+<!-- Block 2 -->
+<div class="w-1/4 flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1">location_on</span>
+<div class="text-text-secondary font-body-md text-[14px]">
+<p class="text-text-primary">Av. Washington Soares, 1200</p>
+<p class="">Galpão de Logística</p>
+<p class="">Edson Queiroz, Fortaleza - CE</p>
+</div>
+</div>
+<!-- Block 3 -->
+<div class="w-1/4">
+<div class="flex flex-col">
+<span class="text-text-secondary text-[12px] font-label-mono uppercase tracking-wider">Cronograma</span>
+<span class="text-text-primary font-semibold">Hoje, 24/05 - Tarde</span>
+<div class="mt-2 flex items-center gap-2 text-status-enroute font-label-mono text-[13px]">
+<span class="material-symbols-outlined text-[16px] animate-pulse">distance</span>
+                                Motorista a 2.4km
+                            </div><div class="mt-1 flex items-center gap-2 text-text-secondary font-label-mono text-[13px]"><span class="material-symbols-outlined text-[16px]">inventory_2</span>Volume Estimado: 12m³</div>
+</div>
+</div>
+<!-- Block 4 -->
+<div class="w-1/6 flex justify-end">
+<span class="text-text-secondary font-label-mono text-[12px] italic">Aguardando Coleta</span>
+</div>
+</div>
+<!-- Card 3: AGENDADA -->
+<div class="glass-card rounded-xl p-6 flex items-center justify-between hover:bg-white/10 transition-all border-l-4 border-l-outline" style="transform: translateY(0px); transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+<!-- Block 1 -->
+<div class="w-1/4">
+<span class="font-label-mono text-label-mono text-text-secondary mb-1 block">#COL-4052</span>
+<h3 class="font-headline-lg text-[18px] font-semibold text-text-primary leading-tight">Mercado Central Varejo</h3>
+<p class="font-label-mono text-[11px] text-text-secondary mb-3">CNPJ: 08.455.231/0001-11</p>
+<span class="px-3 py-1 rounded-full bg-white/10 text-on-surface-variant font-label-mono text-[10px] border border-white/10">
+                            AGENDADA
+                        </span>
+</div>
+<!-- Block 2 -->
+<div class="w-1/4 flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1">location_on</span>
+<div class="text-text-secondary font-body-md text-[14px]">
+<p class="text-text-primary">Rua Alberto Nepomuceno, 199</p>
+<p class="">Doca 4 - Entrada Sul</p>
+<p class="">Centro, Fortaleza - CE</p>
+</div>
+</div>
+<!-- Block 3 -->
+<div class="w-1/4">
+<div class="flex flex-col">
+<span class="text-text-secondary text-[12px] font-label-mono uppercase tracking-wider">Data Programada</span>
+<span class="text-text-primary font-semibold">Terça-feira, 30/06 - Manhã</span>
+<div class="mt-2 flex items-center gap-2 text-text-secondary font-label-mono text-[13px]">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                                Confirmada via App
+                            </div><div class="mt-1 flex items-center gap-2 text-text-secondary font-label-mono text-[13px]"><span class="material-symbols-outlined text-[16px]">inventory_2</span>Volume Estimado: 850L</div>
+</div>
+</div>
+<!-- Block 4 -->
+<div class="w-1/6 flex justify-end">
+<span class="text-text-secondary font-label-mono text-[12px] italic">Aguardando Coleta</span>
+</div>
+</div>
+<!-- Card 4: CONCLUÍDA -->
+<div class="glass-card rounded-xl p-6 flex items-center justify-between hover:bg-white/10 transition-all border-l-4 border-l-status-completed">
+<!-- Block 1 -->
+<div class="w-1/4">
+<span class="font-label-mono text-label-mono text-text-secondary mb-1 block">#COL-3998</span>
+<h3 class="font-headline-lg text-[18px] font-semibold text-text-primary leading-tight">Pague Menos Matriz</h3>
+<p class="font-label-mono text-[11px] text-text-secondary mb-3">CNPJ: 06.626.253/0001-51</p>
+<span class="px-3 py-1 rounded-full bg-status-completed/10 text-status-completed font-label-mono text-[10px] border border-status-completed/20">
+                            CONCLUÍDA
+                        </span>
+</div>
+<!-- Block 2 -->
+<div class="w-1/4 flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1">location_on</span>
+<div class="text-text-secondary font-body-md text-[14px]">
+<p class="text-text-primary">Rua Senador Pompeu, 1520</p>
+<p class="">Administrativo</p>
+<p class="">Centro, Fortaleza - CE</p>
+</div>
+</div>
+<!-- Block 3 -->
+<div class="w-1/4">
+<div class="flex flex-col">
+<span class="text-text-secondary text-[12px] font-label-mono uppercase tracking-wider">Responsável</span>
+<span class="text-text-primary font-semibold">Amanda Souza</span>
+<div class="mt-2 flex items-center gap-2 text-primary font-label-mono text-[13px]">
+<span class="material-symbols-outlined text-[16px]">scale</span>
+                                Peso Validado: 312 Kg
+                            </div><div class="mt-1 flex items-center gap-2 text-text-secondary font-label-mono text-[13px]"><span class="material-symbols-outlined text-[16px]">inventory_2</span>Volume Total: 1.2m³</div>
+</div>
+</div>
+<!-- Block 4 -->
+<div class="w-1/6 flex justify-end">
+<button class="px-4 py-2 border border-primary/40 text-primary rounded-lg font-button-text text-[12px] hover:bg-primary/10 transition-all">
+                            [📄 Ver Declaração]
+                        </button>
+</div>
+</div>
+</div>
+<!-- Empty State / Load More -->
+<div class="mt-12 flex justify-center">
+<button class="group flex flex-col items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-4xl text-primary animate-bounce">expand_more</span>
+<span class="font-label-mono text-[11px] uppercase tracking-widest">Carregar mais registros</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Side Decoration: Ambient Glow -->
+<div class="fixed top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/5 blur-[120px] rounded-full -z-10"></div>
+<div class="fixed bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-status-enroute/5 blur-[120px] rounded-full -z-10"></div>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-2px)';
+                card.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0px)';
+            });
+        });
+
+        // Tab selection simulation
+        const tabs = document.querySelectorAll('nav a');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                if (tab.innerText.trim() !== "Listagem de Rotas") {
+                    e.preventDefault();
+                    // Just visual feedback for the demo
+                    alert('Navegando para: ' + tab.innerText.trim());
+                }
+            });
+        });
+    </script>
+
+
+</body></html>
