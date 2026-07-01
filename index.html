@@ -365,6 +365,10 @@
                     <div>
                         <h2 class="font-headline-lg text-2xl text-text-primary">Histórico e Controle de Rotas</h2>
                         <p class="font-body-md text-text-secondary text-sm">Gerencie, exporte e audite todas as coletas programadas no sistema</p>
+                        <div class="flex items-center gap-2 mt-3 select-none">
+                            <input id="chk-select-all-listagem" type="checkbox" class="w-4 h-4 rounded bg-[#0b131f] border-white/10 text-primary focus:ring-primary/20 transition-all cursor-pointer">
+                            <label for="chk-select-all-listagem" class="text-xs text-on-surface-variant font-medium cursor-pointer">Selecionar Todas</label>
+                        </div>
                     </div>
                     <div class="flex gap-3 w-full sm:w-auto">
                         <button id="btn-export-csv" class="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-5 py-2.5 glass-card rounded-lg text-text-primary font-button-text text-button-text hover:bg-white/10 transition-all select-none">
@@ -376,6 +380,36 @@
                             <span>Imprimir Listagem</span>
                         </button>
                     </div>
+                </div>
+
+                <!-- Filters Bar -->
+                <div class="glass-card p-4 rounded-xl border border-white/5 mb-6 flex flex-wrap gap-4 items-end">
+                    <div class="flex-grow min-w-[150px]">
+                        <label class="block text-[10px] font-label-mono uppercase tracking-wider text-text-secondary mb-1.5">Status</label>
+                        <select id="filter-status" class="w-full bg-[#0c1524] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:border-primary focus:outline-none transition-all">
+                            <option value="">Todos os Status</option>
+                            <option value="SOLICITADA">Solicitada</option>
+                            <option value="EM ROTA">Em Rota</option>
+                            <option value="COLETADO">Coletado no Local</option>
+                            <option value="CONCLUÍDA">Concluído</option>
+                        </select>
+                    </div>
+                    <div class="flex-grow min-w-[150px]">
+                        <label class="block text-[10px] font-label-mono uppercase tracking-wider text-text-secondary mb-1.5">Doador / Cliente</label>
+                        <select id="filter-doador" class="w-full bg-[#0c1524] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:border-primary focus:outline-none transition-all">
+                            <option value="">Todos os Doadores</option>
+                        </select>
+                    </div>
+                    <div class="flex-grow min-w-[150px]">
+                        <label class="block text-[10px] font-label-mono uppercase tracking-wider text-text-secondary mb-1.5">Motorista / Responsável</label>
+                        <select id="filter-motorista" class="w-full bg-[#0c1524] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:border-primary focus:outline-none transition-all">
+                            <option value="">Todos os Motoristas</option>
+                        </select>
+                    </div>
+                    <button id="btn-clear-filters" class="px-4 py-2 border border-white/10 hover:bg-white/5 text-on-surface-variant hover:text-white rounded-lg text-xs font-semibold flex items-center gap-1 transition-all h-[36px]">
+                        <span class="material-symbols-outlined text-sm">filter_alt_off</span>
+                        <span>Limpar</span>
+                    </button>
                 </div>
 
                 <!-- Route List (Vertical Grid of Cards) -->
@@ -618,6 +652,7 @@
         let loginRole = 'admin';  // 'admin' | 'coletor'
         let currentTab = 'acompanhar'; // 'acompanhar' | 'listagem'
         let currentUser = null;   // Active logged-in user profile
+        let currentCollections = []; // Cache loaded collections list
 
         // Collector Workflow State
         let coletorState = 'selecionar'; // 'selecionar' | 'mapa' | 'ativa'
@@ -766,6 +801,66 @@
             document.getElementById('btn-load-more').addEventListener('click', () => {
                 showToast('Todos os registros já foram carregados.', 'info');
             });
+
+            // Selecionar Todas na listagem
+            const chkSelectAll = document.getElementById('chk-select-all-listagem');
+            if (chkSelectAll) {
+                chkSelectAll.addEventListener('change', (e) => {
+                    const checked = e.target.checked;
+                    document.querySelectorAll('.select-listagem-checkbox').forEach(cb => {
+                        cb.checked = checked;
+                    });
+                });
+            }
+
+            // Exportar .CSV
+            document.getElementById('btn-export-csv').addEventListener('click', () => {
+                const checkedCheckboxes = document.querySelectorAll('.select-listagem-checkbox:checked');
+                if (checkedCheckboxes.length === 0) {
+                    showToast('Selecione ao menos 1 coleta para exportar!', 'error');
+                    return;
+                }
+                const selectedIds = Array.from(checkedCheckboxes).map(cb => cb.getAttribute('data-id'));
+                const selectedList = currentCollections.filter(c => selectedIds.includes(c.id));
+                
+                exportToCSV(selectedList);
+            });
+
+            // Imprimir Listagem
+            document.getElementById('btn-print').addEventListener('click', () => {
+                const checkedCheckboxes = document.querySelectorAll('.select-listagem-checkbox:checked');
+                if (checkedCheckboxes.length === 0) {
+                    showToast('Selecione ao menos 1 coleta para imprimir!', 'error');
+                    return;
+                }
+                const selectedIds = Array.from(checkedCheckboxes).map(cb => cb.getAttribute('data-id'));
+                const selectedList = currentCollections.filter(c => selectedIds.includes(c.id));
+                
+                printList(selectedList);
+            });
+
+            // Listeners para os filtros da listagem
+            const filterStatus = document.getElementById('filter-status');
+            const filterDoador = document.getElementById('filter-doador');
+            const filterMotorista = document.getElementById('filter-motorista');
+            const btnClearFilters = document.getElementById('btn-clear-filters');
+
+            if (filterStatus && filterDoador && filterMotorista && btnClearFilters) {
+                const handleFilterChange = () => {
+                    applyFilters();
+                };
+                filterStatus.addEventListener('change', handleFilterChange);
+                filterDoador.addEventListener('change', handleFilterChange);
+                filterMotorista.addEventListener('change', handleFilterChange);
+
+                btnClearFilters.addEventListener('click', () => {
+                    filterStatus.value = '';
+                    filterDoador.value = '';
+                    filterMotorista.value = '';
+                    if (chkSelectAll) chkSelectAll.checked = false;
+                    applyFilters();
+                });
+            }
         }
 
         // Set Role on Login Screen
@@ -889,6 +984,32 @@
                     api.getRoutes(),
                     api.getCollections()
                 ]);
+                currentCollections = collections; // Cache para acoes de exportacao/impressao
+                
+                // Reinicia a caixa "Selecionar Todas" ao recarregar
+                const chkSelectAll = document.getElementById('chk-select-all-listagem');
+                if (chkSelectAll) chkSelectAll.checked = false;
+
+                // Popula os seletores de filtro dinamicamente
+                const doadorSelect = document.getElementById('filter-doador');
+                const motoristaSelect = document.getElementById('filter-motorista');
+                if (doadorSelect && motoristaSelect) {
+                    const uniqueDoadores = [...new Set(collections.map(c => c.client))].sort();
+                    const uniqueMotoristas = [...new Set(collections.map(c => c.responsible || 'Sem motorista'))].sort();
+
+                    const prevDoador = doadorSelect.value;
+                    const prevMotorista = motoristaSelect.value;
+
+                    doadorSelect.innerHTML = '<option value="">Todos os Doadores</option>' + 
+                        uniqueDoadores.map(d => `<option value="${d}">${d}</option>`).join('');
+                    
+                    motoristaSelect.innerHTML = '<option value="">Todos os Motoristas</option>' + 
+                        uniqueMotoristas.map(m => `<option value="${m}">${m}</option>`).join('');
+
+                    if (prevDoador && uniqueDoadores.includes(prevDoador)) doadorSelect.value = prevDoador;
+                    if (prevMotorista && uniqueMotoristas.includes(prevMotorista)) motoristaSelect.value = prevMotorista;
+                }
+
                 renderDashboard(routes, collections);
             } catch (e) {
                 showToast('Falha ao sincronizar dados com o serviço.', 'error');
@@ -1373,6 +1494,11 @@
                 `).join('');
 
             // Render History List (horizontal cards)
+            renderHistoryList(collections);
+        }
+
+        // Render History List
+        function renderHistoryList(collections) {
             collectionsList.innerHTML = collections.length === 0
                 ? `<div class="glass-card p-8 text-center text-text-secondary italic rounded-xl">Nenhuma coleta registrada no histórico.</div>`
                 : collections.map(c => {
@@ -1401,13 +1527,16 @@
 
                     return `
                         <div class="glass-card rounded-xl p-6 flex flex-col md:flex-row items-stretch md:items-center justify-between hover:bg-white/[0.08] transition-all border-l-4 ${borderClass} duration-300 hover:-translate-y-0.5 gap-4">
-                            <div class="md:w-1/4">
-                                <span class="font-label-mono text-label-mono text-text-secondary mb-1 block">${c.id}</span>
-                                <h3 class="font-headline-lg text-[16px] font-semibold text-text-primary leading-tight mb-2">${c.client}</h3>
-                                <p class="font-label-mono text-[10px] text-text-secondary mb-3">CNPJ: ${c.cnpj}</p>
-                                <span class="px-3 py-1 rounded-full font-label-mono text-[9px] border ${statusLabelClass} font-bold tracking-wide uppercase">
-                                    ${c.status}
-                                </span>
+                            <div class="md:w-1/4 flex items-start gap-4">
+                                <input class="w-5 h-5 rounded bg-[#0b131f] border-white/10 text-primary focus:ring-primary/20 transition-all select-listagem-checkbox cursor-pointer mt-1" type="checkbox" data-id="${c.id}">
+                                <div>
+                                    <span class="font-label-mono text-label-mono text-text-secondary mb-1 block">${c.id}</span>
+                                    <h3 class="font-headline-lg text-[16px] font-semibold text-text-primary leading-tight mb-2">${c.client}</h3>
+                                    <p class="font-label-mono text-[10px] text-text-secondary mb-3">CNPJ: ${c.cnpj}</p>
+                                    <span class="px-3 py-1 rounded-full font-label-mono text-[9px] border ${statusLabelClass} font-bold tracking-wide uppercase">
+                                        ${c.status}
+                                    </span>
+                                </div>
                             </div>
                             <div class="md:w-1/4 flex items-start gap-2.5">
                                 <span class="material-symbols-outlined text-primary mt-0.5 text-[20px]">location_on</span>
@@ -1464,6 +1593,31 @@
                 }).join('');
         }
 
+        // Apply filters to history list
+        function applyFilters() {
+            const statusVal = document.getElementById('filter-status').value;
+            const doadorVal = document.getElementById('filter-doador').value;
+            const motoristaVal = document.getElementById('filter-motorista').value;
+
+            let filtered = currentCollections;
+
+            if (statusVal) {
+                filtered = filtered.filter(c => String(c.status).toUpperCase() === statusVal);
+            }
+            if (doadorVal) {
+                filtered = filtered.filter(c => c.client === doadorVal);
+            }
+            if (motoristaVal) {
+                filtered = filtered.filter(c => (c.responsible || 'Sem motorista') === motoristaVal);
+            }
+
+            // Desmarca o "Selecionar Todas" quando os filtros são aplicados
+            const chkSelectAll = document.getElementById('chk-select-all-listagem');
+            if (chkSelectAll) chkSelectAll.checked = false;
+
+            renderHistoryList(filtered);
+        }
+
         // Global functions for inline onclick handlers
         window.startRoute = async function(id) {
             showLoading(true);
@@ -1504,9 +1658,189 @@
             showToast(`Exibindo trajeto em tempo real para rota ${id}`, 'info');
         };
 
-        window.viewDeclaration = function(id) {
-            showToast(`Carregando Declaração de Coleta Digital para ${id}`, 'success');
+        window.viewDeclaration = function(collectionId) {
+            const c = currentCollections.find(col => col.id === collectionId);
+            if (!c) {
+                showToast('Erro ao carregar dados da declaração.', 'error');
+                return;
+            }
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>CDF - Certificado de Destinação Final #${c.id}</title>
+                    <style>
+                        body { font-family: 'Courier New', Courier, monospace; color: #222; margin: 40px; line-height: 1.5; }
+                        .header-cert { text-align: center; border-bottom: 3px double #222; padding-bottom: 15px; margin-bottom: 25px; }
+                        .header-cert h1 { font-size: 20px; margin: 5px 0; letter-spacing: 0.5px; font-weight: bold; }
+                        .header-cert p { font-size: 11px; margin: 2px 0; color: #555; }
+                        .cert-body { margin-top: 30px; font-size: 13px; text-align: justify; }
+                        .section-title { font-weight: bold; text-decoration: underline; margin-top: 25px; margin-bottom: 10px; font-size: 13px; text-transform: uppercase; }
+                        .grid-info { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+                        .info-box { border: 1px solid #555; padding: 12px; font-size: 12px; }
+                        .info-box p { margin: 4px 0; }
+                        .highlight-weight { text-align: center; border: 2px solid #222; background-color: #f9f9f9; padding: 15px; margin: 30px 0; font-size: 16px; font-weight: bold; }
+                        .signatures { display: flex; justify-content: space-between; margin-top: 80px; text-align: center; }
+                        .sig-line { width: 45%; border-top: 1px solid #222; padding-top: 8px; font-size: 11px; }
+                        .footer { margin-top: 60px; font-size: 9px; text-align: center; color: #777; border-top: 1px solid #ddd; padding-top: 10px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header-cert">
+                        <h1>CERTIFICADO DE DESTINAÇÃO FINAL (CDF)</h1>
+                        <p>Collety Instituto de Triagem e Reciclagem</p>
+                        <p>Documento de Rastreabilidade e Comprovação Ambiental de Resíduos</p>
+                    </div>
+
+                    <div class="cert-body">
+                        <p>Declaramos para os devidos fins de direito, comprovação ambiental e cumprimento da <b>Política Nacional de Resíduos Sólidos (Lei nº 12.305/10)</b>, que os resíduos descritos neste certificado foram recebidos, pesados e destinados de forma ambientalmente adequada pelo Instituto destinatário.</p>
+                        
+                        <div class="section-title">Envolvidos</div>
+                        <div class="grid-info">
+                            <div class="info-box">
+                                <b>DESTINATÁRIO (INSTITUTO)</b>
+                                <p>Razão Social: Collety Instituto de Triagem e Reciclagem</p>
+                                <p>CNPJ: 45.221.908/0001-32</p>
+                                <p>Endereço: Av. da Reciclagem, 1000 - Ceará</p>
+                            </div>
+                            <div class="info-box">
+                                <b>GERADOR / DOADOR</b>
+                                <p>Razão Social: ${c.client}</p>
+                                <p>CNPJ: ${c.cnpj || 'N/A'}</p>
+                                <p>Endereço: ${c.address}</p>
+                            </div>
+                        </div>
+
+                        <div class="section-title">Dados da Coleta e Rastreabilidade</div>
+                        <div class="info-box" style="margin-bottom: 20px;">
+                            <p><b>Identificador da Coleta (MTR):</b> #${c.id}</p>
+                            <p><b>Responsável Logístico:</b> ${c.responsible || 'Sem motorista atribuído'}</p>
+                            <p><b>Volume Coletado Estimado:</b> ${c.volume || 'Não especificado'}</p>
+                            <p><b>Data/Hora da Operação:</b> ${c.schedule || 'Hoje'}</p>
+                        </div>
+
+                        <div class="highlight-weight">
+                            PESO FINAL HOMOLOGADO NO INSTITUTO: ${c.validatedWeight || '0.0'} KG
+                        </div>
+
+                        <p style="font-size: 11px; color: #444; margin-top: 20px;">Este certificado comprova a destinação final ambientalmente adequada dos resíduos informados, estando em total conformidade com a legislação federal e estadual vigente de controle de poluentes e resíduos industriais.</p>
+                        
+                        <div class="signatures">
+                            <div class="sig-line">
+                                Representante do Instituto Collety<br>
+                                <span style="font-size: 8px; color: #555;">Assinatura Digital Integrada</span>
+                            </div>
+                            <div class="sig-line">
+                                Operador da Balança / Logística<br>
+                                <span style="font-size: 8px; color: #555;">Registro de Pesagem Supabase</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        Certificado gerado automaticamente pelo sistema de rastreabilidade Collety. Hash de autenticidade: SHA256-${c.id}-${c.validatedWeight || '0'}
+                    </div>
+
+                    <script>
+                        window.onload = function() {
+                            window.print();
+                        }
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
         };
+
+        function exportToCSV(selectedCollections) {
+            const headers = ['ID', 'Cliente/Doador', 'CNPJ', 'Status', 'Endereco', 'Responsavel', 'Peso Validado (Kg)', 'Volume', 'Previsao Horario'];
+            const rows = selectedCollections.map(c => [
+                c.id,
+                `"${(c.client || '').replace(/"/g, '""')}"`,
+                c.cnpj || '',
+                c.status || '',
+                `"${(c.address || '').replace(/"/g, '""')}"`,
+                `"${(c.responsible || 'Sem motorista').replace(/"/g, '""')}"`,
+                c.validatedWeight || '',
+                c.volume || '',
+                c.schedule || ''
+            ]);
+
+            const csvContent = "\uFEFF" + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", `exportacao_coletas_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast(`${selectedCollections.length} coleta(s) exportada(s) para CSV!`, 'success');
+        }
+
+        function printList(selectedCollections) {
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Relatório de Coletas - Collety</title>
+                    <style>
+                        body { font-family: system-ui, -apple-system, sans-serif; color: #333; margin: 30px; }
+                        h1 { font-size: 22px; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+                        th, td { border: 1px solid #ddd; padding: 12px 10px; text-align: left; font-size: 12px; }
+                        th { background-color: #f5f5f5; font-weight: bold; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; }
+                        tr:nth-child(even) { background-color: #fafafa; }
+                        .footer { margin-top: 50px; font-size: 11px; text-align: center; color: #777; border-top: 1px solid #eee; padding-top: 15px; }
+                    </style>
+                </head>
+                <body>
+                    <h1>Relatório de Coletas - Collety</h1>
+                    <p><b>Data de Emissão:</b> ${new Date().toLocaleString('pt-BR')}</p>
+                    <p><b>Total de Coletas:</b> ${selectedCollections.length} registros selecionados</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente/Doador</th>
+                                <th>CNPJ</th>
+                                <th>Status</th>
+                                <th>Endereço</th>
+                                <th>Responsável</th>
+                                <th>Peso (Kg)</th>
+                                <th>Volume</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${selectedCollections.map(c => `
+                                <tr>
+                                    <td><b>${c.id}</b></td>
+                                    <td>${c.client}</td>
+                                    <td>${c.cnpj || ''}</td>
+                                    <td>${c.status}</td>
+                                    <td>${c.address}</td>
+                                    <td>${c.responsible || 'Sem motorista'}</td>
+                                    <td>${c.validatedWeight || '-'}</td>
+                                    <td>${c.volume || '-'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <div class="footer">
+                        Relatório gerado em ambiente seguro • Collety © 2026 - Rastreabilidade Ambiental
+                    </div>
+                    <script>
+                        window.onload = function() {
+                            window.print();
+                            setTimeout(function() { window.close(); }, 500);
+                        }
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
 
         // Loading indicator
         function showLoading(show) {
