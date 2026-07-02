@@ -253,9 +253,13 @@
                 <button id="btn-admin-logout" class="flex items-center justify-center w-10 h-10 rounded-lg bg-white/5 hover:bg-white/10 text-on-surface-variant hover:text-error transition-colors border border-white/10" title="Sair do Sistema">
                     <span class="material-symbols-outlined">logout</span>
                 </button>
-                <button id="btn-open-create-modal" class="bg-[#00E676] hover:bg-[#00c864] text-on-primary-container font-button-text text-button-text px-5 py-2.5 rounded-lg neon-glow transition-all active:scale-95 flex items-center gap-2">
+                <button id="btn-open-donor-modal" class="bg-white/5 border border-white/10 hover:bg-white/10 text-white font-button-text text-button-text px-4 py-2.5 rounded-lg transition-all active:scale-95 flex items-center gap-2 select-none">
+                    <span class="material-symbols-outlined text-[18px]">person_add</span>
+                    <span>+ Cadastrar Doador</span>
+                </button>
+                <button id="btn-open-create-modal" class="bg-[#00E676] hover:bg-[#00c864] text-on-primary-container font-button-text text-button-text px-5 py-2.5 rounded-lg neon-glow transition-all active:scale-95 flex items-center gap-2 select-none">
                     <span class="material-symbols-outlined text-[20px]">add</span>
-                    <span>Cadastrar Rota</span>
+                    <span>+ Nova Coleta</span>
                 </button>
             </div>
         </header>
@@ -433,13 +437,13 @@
             <div class="absolute bottom-[-5%] left-[-5%] w-[500px] h-[500px] bg-status-enroute/5 blur-[150px] rounded-full"></div>
         </div>
 
-        <!-- MODAL: CADASTRAR ROTA -->
+        <!-- MODAL: NOVA SOLICITAÇÃO DE COLETA -->
         <div id="modal-create-route" class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-[#0b131f]/80 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
             <div class="glass-card w-full max-w-[550px] rounded-xl overflow-hidden shadow-2xl scale-95 transition-transform duration-300">
                 <div class="flex justify-between items-center px-6 py-4 border-b border-surface-border">
                     <h3 class="text-xl font-headline-lg font-semibold text-text-primary flex items-center gap-2">
-                        <span class="material-symbols-outlined text-primary text-[24px]">route</span>
-                        <span>Cadastrar Nova Rota</span>
+                        <span class="material-symbols-outlined text-primary text-[24px]">local_shipping</span>
+                        <span>Nova Solicitação de Coleta</span>
                     </h3>
                     <button id="btn-close-create-modal" class="text-on-surface-variant hover:text-white transition-colors focus:outline-none">
                         <span class="material-symbols-outlined">close</span>
@@ -447,36 +451,85 @@
                 </div>
                 <form id="form-create-route" class="p-6 space-y-4">
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="col-span-2">
-                            <label class="block text-sm font-medium text-on-surface-variant mb-1">Cliente / Empresa *</label>
-                            <input type="text" name="client" required placeholder="Ex: Distribuidora Sol Ltda" class="w-full bg-[#0b131f]/60 border border-surface-border rounded-lg px-3 py-2 text-white placeholder-text-secondary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all">
+                        <div class="col-span-2 relative">
+                            <label class="block text-sm font-medium text-on-surface-variant mb-1">Doador / Cliente *</label>
+                            <input type="text" id="autocomplete-donor-input" name="client" required autocomplete="off" placeholder="Digite as 3 primeiras letras..." class="w-full bg-[#0b131f]/60 border border-surface-border rounded-lg px-3 py-2 text-white placeholder-text-secondary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all">
+                            <div id="donor-autocomplete-results" class="hidden absolute left-0 right-0 top-full mt-1 bg-[#0c1524] border border-white/10 rounded-lg shadow-2xl max-h-[180px] overflow-y-auto z-50 divide-y divide-white/5">
+                                <!-- Resultados do Autocomplete -->
+                            </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-on-surface-variant mb-1">CNPJ *</label>
-                            <input type="text" name="cnpj" required placeholder="Ex: 00.000.000/0000-00" class="w-full bg-[#0b131f]/60 border border-surface-border rounded-lg px-3 py-2 text-white placeholder-text-secondary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all">
+                            <input type="text" id="route-modal-cnpj" name="cnpj" required placeholder="Preenchido automaticamente" class="w-full bg-[#0b131f]/60 border border-surface-border rounded-lg px-3 py-2 text-white placeholder-text-secondary/50 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-on-surface-variant mb-1">Bairro *</label>
-                            <input type="text" name="neighborhood" required placeholder="Ex: Messejana" class="w-full bg-[#0b131f]/60 border border-surface-border rounded-lg px-3 py-2 text-white placeholder-text-secondary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all">
+                            <input type="text" id="route-modal-neighborhood" name="neighborhood" required placeholder="Preenchido automaticamente" class="w-full bg-[#0b131f]/60 border border-surface-border rounded-lg px-3 py-2 text-white placeholder-text-secondary/50 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all">
                         </div>
                         <div class="col-span-2">
                             <label class="block text-sm font-medium text-on-surface-variant mb-1">Endereço Completo *</label>
-                            <input type="text" name="address" required placeholder="Ex: Rodovia BR-116, Km 10, nº 450 - Messejana" class="w-full bg-[#0b131f]/60 border border-surface-border rounded-lg px-3 py-2 text-white placeholder-text-secondary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all">
+                            <input type="text" id="route-modal-address" name="address" required placeholder="Preenchido automaticamente" class="w-full bg-[#0b131f]/60 border border-surface-border rounded-lg px-3 py-2 text-white placeholder-text-secondary/50 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-on-surface-variant mb-1">Descrição / Previsão de Volumes *</label>
+                            <input type="text" name="description" required placeholder="Ex: 10 fardos de papelão, 5 sacos de garrafas PET" class="w-full bg-[#0b131f]/60 border border-surface-border rounded-lg px-3 py-2 text-white placeholder-text-secondary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-on-surface-variant mb-1">Horário Previsto *</label>
                             <input type="text" name="time" required placeholder="Ex: 02:30 PM" class="w-full bg-[#0b131f]/60 border border-surface-border rounded-lg px-3 py-2 text-white placeholder-text-secondary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-on-surface-variant mb-1">Volume Estimado</label>
+                            <label class="block text-sm font-medium text-on-surface-variant mb-1">Volume Estimado (m³ ou L)</label>
                             <input type="text" name="volume" placeholder="Ex: 1.2m³ ou 850L" class="w-full bg-[#0b131f]/60 border border-surface-border rounded-lg px-3 py-2 text-white placeholder-text-secondary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all">
                         </div>
                     </div>
                     <div class="mt-6 flex gap-4 pt-4 border-t border-surface-border">
                         <button type="button" id="btn-cancel-create" class="flex-1 py-2.5 border border-surface-border text-on-surface hover:bg-white/5 rounded-lg font-button-text transition-colors">Cancelar</button>
+                        <button type="submit" class="flex-1 py-2.5 bg-[#00E676] hover:bg-[#00c864] text-on-primary-container font-bold rounded-lg transition-all neon-glow flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">save</span>
+                            <span>Salvar Coleta</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- MODAL: CADASTRAR DOADOR -->
+        <div id="modal-create-donor" class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-[#0b131f]/80 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+            <div class="glass-card w-full max-w-[500px] rounded-xl overflow-hidden shadow-2xl scale-95 transition-transform duration-300">
+                <div class="flex justify-between items-center px-6 py-4 border-b border-surface-border">
+                    <h3 class="text-xl font-headline-lg font-semibold text-text-primary flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-[24px]">person_add</span>
+                        <span>Cadastrar Novo Doador</span>
+                    </h3>
+                    <button id="btn-close-donor-modal" class="text-on-surface-variant hover:text-white transition-colors focus:outline-none">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <form id="form-create-donor" class="p-6 space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-on-surface-variant mb-1">Razão Social / Nome Fantasia *</label>
+                            <input type="text" name="name" required placeholder="Ex: Metalúrgica Gerdau" class="w-full bg-[#0b131f]/60 border border-surface-border rounded-lg px-3 py-2 text-white placeholder-text-secondary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-on-surface-variant mb-1">CNPJ *</label>
+                            <input type="text" name="cnpj" required placeholder="Ex: 77.888.999/0001-55" class="w-full bg-[#0b131f]/60 border border-surface-border rounded-lg px-3 py-2 text-white placeholder-text-secondary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-on-surface-variant mb-1">Bairro *</label>
+                            <input type="text" name="neighborhood" required placeholder="Ex: Messejana" class="w-full bg-[#0b131f]/60 border border-surface-border rounded-lg px-3 py-2 text-white placeholder-text-secondary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-on-surface-variant mb-1">Endereço Completo *</label>
+                            <input type="text" name="address" required placeholder="Ex: Rodovia BR-116, Km 12 - Messejana, Fortaleza - CE" class="w-full bg-[#0b131f]/60 border border-surface-border rounded-lg px-3 py-2 text-white placeholder-text-secondary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all">
+                        </div>
+                    </div>
+                    <div class="mt-6 flex gap-4 pt-4 border-t border-surface-border">
+                        <button type="button" id="btn-cancel-donor" class="flex-1 py-2.5 border border-surface-border text-on-surface hover:bg-white/5 rounded-lg font-button-text transition-colors">Cancelar</button>
                         <button type="submit" class="flex-1 py-2.5 bg-primary-container text-on-primary font-bold rounded-lg hover:brightness-110 transition-all neon-glow flex items-center justify-center gap-2">
                             <span class="material-symbols-outlined text-[18px]">save</span>
-                            <span>Salvar Solicitação</span>
+                            <span>Salvar Doador</span>
                         </button>
                     </div>
                 </form>
@@ -633,6 +686,10 @@
         const formCreate = document.getElementById('form-create-route');
         const modalWeight = document.getElementById('modal-register-weight');
         const formRegisterWeight = document.getElementById('form-register-weight');
+        const modalDonor = document.getElementById('modal-create-donor');
+        const formDonor = document.getElementById('form-create-donor');
+
+        let allDonorsCache = []; // Cache doadores para autocomplete
 
         // Login Screen Elements
         const tabLoginAdmin = document.getElementById('tab-login-admin');
@@ -728,14 +785,125 @@
             tabBtnAcompanhar.addEventListener('click', () => switchTab('acompanhar'));
             tabBtnListagem.addEventListener('click', () => switchTab('listagem'));
 
-            // Admin: Open Create Modal
-            document.getElementById('btn-open-create-modal').addEventListener('click', () => showModal(modalCreate));
-            document.getElementById('btn-close-create-modal').addEventListener('click', () => hideModal(modalCreate));
-            document.getElementById('btn-cancel-create').addEventListener('click', () => hideModal(modalCreate));
+            // Admin: Open Create Modal (Nova Coleta)
+            document.getElementById('btn-open-create-modal').addEventListener('click', async () => {
+                showModal(modalCreate);
+                document.getElementById('autocomplete-donor-input').focus();
+                // Limpa campos preenchidos
+                document.getElementById('route-modal-cnpj').value = '';
+                document.getElementById('route-modal-neighborhood').value = '';
+                document.getElementById('route-modal-address').value = '';
+                
+                try {
+                    // Carrega a lista de doadores atualizada do Supabase
+                    allDonorsCache = await api.getDonors();
+                } catch (e) {
+                    console.error("Falha ao atualizar cache de doadores:", e);
+                }
+            });
+            document.getElementById('btn-close-create-modal').addEventListener('click', () => {
+                hideModal(modalCreate);
+                document.getElementById('donor-autocomplete-results').classList.add('hidden');
+            });
+            document.getElementById('btn-cancel-create').addEventListener('click', () => {
+                hideModal(modalCreate);
+                document.getElementById('donor-autocomplete-results').classList.add('hidden');
+            });
 
-            // Admin: Close Weight Modal
-            document.getElementById('btn-close-weight-modal').addEventListener('click', () => hideModal(modalWeight));
-            document.getElementById('btn-cancel-weight').addEventListener('click', () => hideModal(modalWeight));
+            // Autocomplete de Doador no Input
+            const autoInput = document.getElementById('autocomplete-donor-input');
+            const autoResults = document.getElementById('donor-autocomplete-results');
+
+            autoInput.addEventListener('input', (e) => {
+                const query = e.target.value.trim().toUpperCase();
+                if (query.length < 3) {
+                    autoResults.classList.add('hidden');
+                    autoResults.innerHTML = '';
+                    return;
+                }
+
+                const matches = allDonorsCache.filter(d => 
+                    String(d.name).toUpperCase().includes(query)
+                );
+
+                if (matches.length === 0) {
+                    autoResults.classList.remove('hidden');
+                    autoResults.innerHTML = `
+                        <div class="px-4 py-3 text-xs text-text-secondary italic">
+                            Nenhum doador encontrado. Cadastre o doador primeiro.
+                        </div>
+                    `;
+                    return;
+                }
+
+                autoResults.classList.remove('hidden');
+                autoResults.innerHTML = matches.map(d => `
+                    <div class="autocomplete-item px-4 py-2.5 text-xs text-white hover:bg-primary/20 cursor-pointer transition-colors"
+                         data-id="${d.id}"
+                         data-name="${d.name.replace(/"/g, '&quot;')}"
+                         data-cnpj="${d.cnpj}"
+                         data-address="${d.address.replace(/"/g, '&quot;')}"
+                         data-neighborhood="${d.neighborhood.replace(/"/g, '&quot;')}">
+                        <div class="font-bold">${d.name}</div>
+                        <div class="text-[10px] text-text-secondary">CNPJ: ${d.cnpj} • ${d.neighborhood}</div>
+                    </div>
+                `).join('');
+
+                // Click handler para itens sugeridos
+                autoResults.querySelectorAll('.autocomplete-item').forEach(item => {
+                    item.addEventListener('click', (ev) => {
+                        const target = ev.currentTarget;
+                        autoInput.value = target.getAttribute('data-name');
+                        document.getElementById('route-modal-cnpj').value = target.getAttribute('data-cnpj');
+                        document.getElementById('route-modal-neighborhood').value = target.getAttribute('data-neighborhood');
+                        document.getElementById('route-modal-address').value = target.getAttribute('data-address');
+                        
+                        autoResults.classList.add('hidden');
+                        autoResults.innerHTML = '';
+                    });
+                });
+            });
+
+            // Fecha autocomplete ao clicar fora
+            document.addEventListener('click', (e) => {
+                if (e.target !== autoInput && !autoResults.contains(e.target)) {
+                    autoResults.classList.add('hidden');
+                }
+            });
+
+            // Admin: Modal Cadastrar Doador
+            document.getElementById('btn-open-donor-modal').addEventListener('click', () => {
+                showModal(modalDonor);
+                formDonor.reset();
+            });
+            document.getElementById('btn-close-donor-modal').addEventListener('click', () => hideModal(modalDonor));
+            document.getElementById('btn-cancel-donor').addEventListener('click', () => hideModal(modalDonor));
+
+            // Form Submit: Cadastrar Doador
+            formDonor.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(formDonor);
+                const data = {
+                    name: formData.get('name'),
+                    cnpj: formData.get('cnpj'),
+                    neighborhood: formData.get('neighborhood'),
+                    address: formData.get('address')
+                };
+
+                hideModal(modalDonor);
+                showLoading(true);
+                try {
+                    await api.createDonor(data);
+                    showToast(`Doador "${data.name}" cadastrado com sucesso!`, 'success');
+                    formDonor.reset();
+                    // Atualiza cache de doadores
+                    allDonorsCache = await api.getDonors();
+                } catch (error) {
+                    showToast('Erro ao cadastrar doador. Verifique se o CNPJ já existe.', 'error');
+                } finally {
+                    showLoading(false);
+                }
+            });
 
             // Admin Form Submit: Create Collection Request
             formCreate.addEventListener('submit', async (e) => {
@@ -746,6 +914,7 @@
                     cnpj: formData.get('cnpj'),
                     neighborhood: formData.get('neighborhood'),
                     address: formData.get('address'),
+                    description: formData.get('description'),
                     time: formData.get('time'),
                     volume: formData.get('volume'),
                     estimatedWeight: 50 // Peso estimado padrao
@@ -764,6 +933,12 @@
                     showLoading(false);
                 }
             });
+
+            // Admin: Close Weight Modal
+            const btnCloseWeight = document.getElementById('btn-close-weight-modal');
+            const btnCancelWeight = document.getElementById('btn-cancel-weight');
+            if (btnCloseWeight) btnCloseWeight.addEventListener('click', () => hideModal(modalWeight));
+            if (btnCancelWeight) btnCancelWeight.addEventListener('click', () => hideModal(modalWeight));
 
             // Admin Form Submit: Register Weight
             formRegisterWeight.addEventListener('submit', async (e) => {
@@ -1079,6 +1254,10 @@
                                                 <p class="text-[9px] uppercase tracking-wider text-text-secondary font-label-mono leading-none mb-1">Estimativa</p>
                                                 <p class="text-white">Vol: ${r.volume} • Est: ${r.estimatedWeight || 50} kg</p>
                                             </div>
+                                            <div>
+                                                <p class="text-[9px] uppercase tracking-wider text-text-secondary font-label-mono leading-none mb-1">Previsão de Volumes</p>
+                                                <p class="text-white">${(r.coletas && r.coletas[0] && r.coletas[0].description) || 'Previsão de volumes não detalhada'}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1225,6 +1404,10 @@
                                             <div class="flex items-center gap-2 text-on-surface-variant text-xs">
                                                 <span class="material-symbols-outlined text-sm text-primary">map</span>
                                                 <span>Bairro: ${c.neighborhood}</span>
+                                            </div>
+                                            <div class="flex items-start gap-2 text-on-surface-variant text-xs mt-1">
+                                                <span class="material-symbols-outlined text-sm text-primary">inventory_2</span>
+                                                <span><b>Previsão de Volumes:</b> ${c.description || 'Previsão de volumes não detalhada'}</span>
                                             </div>
                                             <div class="mt-2 flex justify-end">
                                                 <button onclick="window.collectorConfirmWeighing('${c.id}')" class="w-full py-2.5 bg-primary-container text-on-primary-container text-xs font-bold rounded-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-1 select-none">

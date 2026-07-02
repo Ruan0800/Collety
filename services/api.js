@@ -98,6 +98,34 @@ class ApiService {
     return data;
   }
 
+  // Buscar Doadores cadastrados
+  async getDonors() {
+    await this._delay(200);
+    const { data, error } = await this.supabase
+      .from('doadores')
+      .select('*')
+      .order('name');
+    if (error) throw error;
+    return data;
+  }
+
+  // Cadastrar Novo Doador
+  async createDonor(data) {
+    await this._delay(300);
+    const { data: newDonor, error } = await this.supabase
+      .from('doadores')
+      .insert({
+        name: data.name,
+        cnpj: data.cnpj,
+        address: data.address,
+        neighborhood: data.neighborhood
+      })
+      .select()
+      .single();
+    if (error) throw error;
+    return newDonor;
+  }
+
   // Buscar Rotas (Join Relacional com cálculo dinâmico de SLA/Warnings)
   async getRoutes() {
     await this._delay(200);
@@ -130,6 +158,7 @@ class ApiService {
           volume,
           real_weight,
           estimated_weight,
+          description,
           doadores (
             name,
             cnpj,
@@ -154,6 +183,7 @@ class ApiService {
         volume,
         real_weight,
         estimated_weight,
+        description,
         doadores (
           name,
           cnpj,
@@ -227,6 +257,7 @@ class ApiService {
           id: c.id,
           status: c.status,
           volume: c.volume,
+          description: c.description || 'Previsão de volumes não detalhada',
           estimatedWeight: c.estimated_weight,
           realWeight: c.real_weight,
           client: c.doadores ? c.doadores.name : 'Cliente',
@@ -264,6 +295,7 @@ class ApiService {
           id: c.id,
           status: c.status,
           volume: c.volume,
+          description: c.description || 'Previsão de volumes não detalhada',
           estimatedWeight: c.estimated_weight,
           realWeight: c.real_weight,
           client: donor ? donor.name : 'Cliente',
@@ -287,6 +319,7 @@ class ApiService {
         volume,
         real_weight,
         estimated_weight,
+        description,
         route_id,
         rotas (
           id,
@@ -323,6 +356,7 @@ class ApiService {
         responsible: driverName,
         validatedWeight: c.real_weight,
         volume: c.volume || '0L',
+        description: c.description || 'Previsão de volumes não detalhada',
         routeId: c.route_id,
         schedule: route ? `Hoje - ${route.start_time}` : 'Hoje'
       };
@@ -371,7 +405,8 @@ class ApiService {
         donor_id: donorId,
         status: "Solicitada",
         volume: data.volume || "0L",
-        estimated_weight: parseFloat(data.estimatedWeight) || 50
+        estimated_weight: parseFloat(data.estimatedWeight) || 50,
+        description: data.description || "Previsão de volumes não detalhada"
       });
 
     if (collectionError) throw collectionError;
@@ -573,21 +608,21 @@ class ApiService {
     
     const defaultCollections = [
       // Concluídas
-      { id: "COL-4039", donor_id: getDonorId("Ceará Tech Solutions"), status: "Concluída", real_weight: 148, volume: "450L", estimated_weight: 150 },
-      { id: "COL-3998", donor_id: getDonorId("Pague Menos Matriz"), status: "Concluída", real_weight: 312, volume: "1.2m³", estimated_weight: 300 },
+      { id: "COL-4039", donor_id: getDonorId("Ceará Tech Solutions"), status: "Concluída", real_weight: 148, volume: "450L", estimated_weight: 150, description: "5 sacos de garrafas PET, 2 fardos de papelão" },
+      { id: "COL-3998", donor_id: getDonorId("Pague Menos Matriz"), status: "Concluída", real_weight: 312, volume: "1.2m³", estimated_weight: 300, description: "15 caixas plásticas de cosméticos" },
       
       // Em Rota (rotas ativas)
-      { id: "COL-4045", route_id: "RT-8810", donor_id: getDonorId("Central-Sul (Distribuidora)"), status: "Em Rota", volume: "12m³", estimated_weight: 500 },
-      { id: "COL-4052", route_id: "RT-8812", donor_id: getDonorId("Mercado Central Varejo"), status: "Em Rota", volume: "850L", estimated_weight: 300 },
+      { id: "COL-4045", route_id: "RT-8810", donor_id: getDonorId("Central-Sul (Distribuidora)"), status: "Em Rota", volume: "12m³", estimated_weight: 500, description: "10 paletes de plástico filme" },
+      { id: "COL-4052", route_id: "RT-8812", donor_id: getDonorId("Mercado Central Varejo"), status: "Em Rota", volume: "850L", estimated_weight: 300, description: "8 caixas de papelão corrugador" },
       
       // Coletadas (rotas pendentes de pesagem)
-      { id: "COL-4053", route_id: "RT-8795", donor_id: getDonorId("Hospital Santa Clara"), status: "Coletado", volume: "450L", estimated_weight: 400 },
-      { id: "COL-1004", route_id: "RT-8790", donor_id: getDonorId("Metalúrgica Gerdau"), status: "Coletado", volume: "1.2m³", estimated_weight: 200 },
+      { id: "COL-4053", route_id: "RT-8795", donor_id: getDonorId("Hospital Santa Clara"), status: "Coletado", volume: "450L", estimated_weight: 400, description: "6 bombonas de resíduos químicos" },
+      { id: "COL-1004", route_id: "RT-8790", donor_id: getDonorId("Metalúrgica Gerdau"), status: "Coletado", volume: "1.2m³", estimated_weight: 200, description: "2 fardos de latas de alumínio" },
       
       // Solicitadas (Sem rota vinculada, aparecem em "Aguardando Início")
-      { id: "COL-1001", route_id: null, donor_id: getDonorId("Logística Norte PJ"), status: "Solicitada", volume: "1.5m³", estimated_weight: 100 },
-      { id: "COL-1002", route_id: null, donor_id: getDonorId("Supermercado Silva PJ"), status: "Solicitada", volume: "800L", estimated_weight: 80 },
-      { id: "COL-1003", route_id: null, donor_id: getDonorId("Indústria Têxtil PJ"), status: "Solicitada", volume: "2.1m³", estimated_weight: 250 }
+      { id: "COL-1001", route_id: null, donor_id: getDonorId("Logística Norte PJ"), status: "Solicitada", volume: "1.5m³", estimated_weight: 100, description: "12 caixas de bobinas de cobre" },
+      { id: "COL-1002", route_id: null, donor_id: getDonorId("Supermercado Silva PJ"), status: "Solicitada", volume: "800L", estimated_weight: 80, description: "6 caixas de hortifrúti vazias" },
+      { id: "COL-1003", route_id: null, donor_id: getDonorId("Indústria Têxtil PJ"), status: "Solicitada", volume: "2.1m³", estimated_weight: 250, description: "4 fardos de retalhos de tecido" }
     ];
 
     const { error: collectionError } = await this.supabase.from('coletas').insert(defaultCollections);
