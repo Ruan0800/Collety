@@ -269,7 +269,7 @@
             <div class="flex gap-10 max-w-[1600px] mx-auto">
                 <button id="tab-btn-acompanhar" class="py-4 font-button-text text-button-text text-[#00E676] border-b-2 border-[#00E676] flex items-center gap-2 focus:outline-none select-none">
                     <span class="material-symbols-outlined text-[18px]">analytics</span>
-                    Acompanhar Rotas
+                    Acompanhar Coletas
                 </button>
                 <button id="tab-btn-listagem" class="py-4 font-button-text text-button-text text-on-surface-variant hover:text-primary border-b-2 border-transparent flex items-center gap-2 focus:outline-none select-none transition-colors">
                     <span class="material-symbols-outlined text-[18px]">list_alt</span>
@@ -287,7 +287,7 @@
                     <!-- Stat 1 -->
                     <div class="glass-card p-6 rounded-xl flex items-center justify-between">
                         <div>
-                            <p class="text-on-surface-variant font-label-mono text-label-mono uppercase mb-1">Rotas Ativas</p>
+                            <p class="text-on-surface-variant font-label-mono text-label-mono uppercase mb-1">Coletas em Rota</p>
                             <p id="stat-active-count" class="text-text-primary font-headline-lg text-[28px]">-</p>
                         </div>
                         <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
@@ -367,7 +367,7 @@
                 <!-- Action Bar -->
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-8">
                     <div>
-                        <h2 class="font-headline-lg text-2xl text-text-primary">Histórico e Controle de Rotas</h2>
+                        <h2 class="font-headline-lg text-2xl text-text-primary">Histórico e Auditoria de Coletas</h2>
                         <p class="font-body-md text-text-secondary text-sm">Gerencie, exporte e audite todas as coletas programadas no sistema</p>
                         <div class="flex items-center gap-2 mt-3 select-none">
                             <input id="chk-select-all-listagem" type="checkbox" class="w-4 h-4 rounded bg-[#0b131f] border-white/10 text-primary focus:ring-primary/20 transition-all cursor-pointer">
@@ -1197,6 +1197,23 @@
             try {
                 const routes = await api.getRoutes();
                 
+                // Detecção automática de rota ativa vinculada ao motorista logado
+                if (currentUser) {
+                    const activeRouteForDriver = routes.find(r => 
+                        r.driverName === currentUser.name && 
+                        (r.status === 'Em Rota' || r.status === 'Pendente Pesagem')
+                    );
+                    if (activeRouteForDriver) {
+                        coletorState = 'ativa';
+                        activeRouteId = activeRouteForDriver.id;
+                    } else if (coletorState === 'ativa') {
+                        // Se o estado local estiver 'ativa' mas a rota já foi concluída, retorna para a seleção
+                        coletorState = 'selecionar';
+                        activeRouteId = null;
+                        selectedRouteIds = [];
+                    }
+                }
+
                 const badge = document.getElementById('collector-task-badge');
                 const contentContainer = document.getElementById('collector-main-content');
                 const footerContainer = document.getElementById('collector-footer-actions');
